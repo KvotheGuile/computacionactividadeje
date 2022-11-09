@@ -3,7 +3,7 @@ input.onButtonPressed(Button.A, function () {
 })
 function Over () {
     gameOn = 0
-    score = Math.round(control.millis() / 5000)
+    score = Math.floor(control.millis() / 5000)
     music.startMelody(music.builtInMelody(Melodies.Dadadadum), MelodyOptions.ForeverInBackground)
     Player.delete()
     for (let index = 0; index <= 4; index++) {
@@ -41,7 +41,7 @@ let gameOn = 0
 let score = 0
 score = 0
 gameOn = 1
-let speed = 600
+let speed = 700
 Player = game.createSprite(2, 4)
 let meteors = [
 Meteor0,
@@ -65,11 +65,17 @@ basic.forever(function () {
             if (list[index].get(LedSpriteProperty.Y) < 4) {
                 if (list[index].get(LedSpriteProperty.Brightness) >= 20) {
                     list[index].change(LedSpriteProperty.Y, 1)
-                } else if (0 == randint(0, 1)) {
+                } else if (0 != randint(0, 2)) {
                     list[index].set(LedSpriteProperty.Brightness, 110)
                 }
             }
         }
+    }
+    if (Math.floor(control.millis() / 5000) > 6) {
+        speed = 550
+    }
+    if (Math.floor(control.millis() / 5000) > 12) {
+        speed = 400
     }
 })
 loops.everyInterval(speed / 2, function () {
