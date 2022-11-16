@@ -24,12 +24,22 @@ function Over () {
         basic.pause(1000)
     }
 }
+function NumberOfActives () {
+    numAct = 0
+    for (let index = 0; index <= 4; index++) {
+        if (list[index].get(LedSpriteProperty.Brightness) > 30) {
+            numAct += 1
+        }
+    }
+    return numAct
+}
 input.onButtonPressed(Button.B, function () {
     Player.change(LedSpriteProperty.X, 1)
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     control.reset()
 })
+let numAct = 0
 let list: game.LedSprite[] = []
 let Meteor4 = 0
 let Meteor3 = 0
@@ -65,7 +75,7 @@ basic.forever(function () {
             if (list[index].get(LedSpriteProperty.Y) < 4) {
                 if (list[index].get(LedSpriteProperty.Brightness) >= 20) {
                     list[index].change(LedSpriteProperty.Y, 1)
-                } else if (0 != randint(0, 2)) {
+                } else if (0 != randint(0, 2) && (0 == randint(0, 4) || NumberOfActives() < 4)) {
                     list[index].set(LedSpriteProperty.Brightness, 110)
                 }
             }
@@ -77,8 +87,11 @@ basic.forever(function () {
     if (Math.floor(control.millis() / 5000) > 12) {
         speed = 400
     }
+    if (Math.floor(control.millis() / 5000) > 24) {
+        speed = 300
+    }
 })
-loops.everyInterval(speed / 2, function () {
+loops.everyInterval(speed / 1, function () {
     for (let index = 0; index <= 4; index++) {
         if (Player.isTouching(list[index])) {
             Over()
